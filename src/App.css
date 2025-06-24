@@ -3,7 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 @theme inline {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 55rem;
+  --breakpoint-lg: 80rem;
+  --breakpoint-xl: 96rem;
+  
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

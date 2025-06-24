@@ -9,47 +9,51 @@ app.use(express.json());
 
 //// to verify that a user exist or not
 
-app.post("/verify", async (req, res) => {
-  try {
-    // console.log("req.body = ", req.body);
 
-    const { username } = req.body;
 
-    const proxyUrl = "https://thingproxy.freeboard.io/fetch/";
-    const targetUrl = "https://leetcode.com/graphql";
 
-    const response = await fetch(targetUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        operationName: "matchedUser",
-        variables: {
-          usernam: username,
-        },
-        query: `
-        query matchedUser($usernam: String!) {
-          matchedUser(username: $usernam) {
-            username
-          }
-        }
-      `,
-      }),
-    });
-    const data = await response.json();
-    console.log(` fetched LeetCode data for user: `);
-    // console.log(data);
 
-    if (data.data.matchedUser) {
-      res.json({ found: true });
-    } else {
-      res.json({ found: false });
-    }
-  } catch (error) {
-    res.json({ found: 1 });
-  }
-});
+// app.post("/verify", async (req, res) => {
+//   try {
+//     // console.log("req.body = ", req.body);
+
+//     const { username } = req.body;
+
+//     const proxyUrl = "https://thingproxy.freeboard.io/fetch/";
+//     const targetUrl = "https://leetcode.com/graphql";
+
+//     const response = await fetch(targetUrl, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         operationName: "matchedUser",
+//         variables: {
+//           usernam: username,
+//         },
+//         query: `
+//         query matchedUser($usernam: String!) {
+//           matchedUser(username: $usernam) {
+//             username
+//           }
+//         }
+//       `,
+//       }),
+//     });
+//     const data = await response.json();
+//     console.log(` fetched LeetCode data for user: `);
+//     // console.log(data);
+
+//     if (data.data.matchedUser) {
+//       res.json({ found: true });
+//     } else {
+//       res.json({ found: false });
+//     }
+//   } catch (error) {
+//     res.json({ found: 1 });
+//   }
+// });
 
 app.post("/usercalender", async (req, res) => {
   const { username } = req.body;
@@ -247,8 +251,142 @@ query userContestRankingInfo($user: String!) {
   }
 })
 
+
+// topic wise difficult
+
+app.post("/Topic-Wise-Difficulty", async (req, res) => {
+  try {
+    // console.log("req.body = ", req.body);
+
+    const { username } = req.body;
+
+   
+    const targetUrl = "https://leetcode.com/graphql";
+
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        operationName: "skillStats",
+        variables: {
+          usernam: username,
+        },
+        query: `
+        query skillStats($usernam: String!) {
+            matchedUser(username: $usernam) {
+              tagProblemCounts {
+                advanced {
+                  tagName
+                  tagSlug
+                  problemsSolved
+                }
+                intermediate {
+                  tagName
+                  tagSlug
+                  problemsSolved
+                }
+                fundamental {
+                  tagName
+                  tagSlug
+                  problemsSolved
+                }
+              }
+            }
+          }
+
+    
+      `,
+      }),
+    });
+    const data = await response.json();
+    // console.log(` fetched LeetCode data for user: `);
+    // console.log(data);
+
+      res.json(data);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+
+app.post("/leetcode-stats", async (req, res) => {
+ const { username } = req.body;
+ 
+ try {
+   const response = await fetch("https://leetcode.com/graphql", {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json",
+     },
+     body: JSON.stringify({
+       query: `
+         query getUserStats($username: String!) {
+           matchedUser(username: $username) {
+             submitStats {
+               acSubmissionNum {
+                 submissions
+               }
+               totalSubmissionNum {
+                 submissions
+               }
+             }
+             userCalendar {
+               streak
+             }
+           }
+         }
+       `,
+       variables: { username }
+     })
+   });
+
+   const data = await response.json();
+   
+   if (!data.data?.matchedUser) {
+     return res.json({
+       totalSubmissions: "-",
+       acceptanceRate: "-", 
+       maxStreak: "-"
+     });
+   }
+
+   const user = data.data.matchedUser;
+   
+   // Calculate totals
+   const totalSubmissions = user.submitStats?.totalSubmissionNum
+     ?.reduce((sum, item) => sum + (item.submissions || 0), 0) || "-";
+   
+   const totalAccepted = user.submitStats?.acSubmissionNum
+     ?.reduce((sum, item) => sum + (item.submissions || 0), 0) || 0;
+   
+   const acceptanceRate = totalSubmissions !== "-" && totalSubmissions > 0 
+     ? ((totalAccepted / totalSubmissions) * 100).toFixed(2) + "%" 
+     : "-";
+   
+   const maxStreak = user.userCalendar?.streak || "-";
+
+   res.json({
+     totalSubmissions,
+     acceptanceRate,
+     maxStreak
+   });
+
+ } catch (err) {
+   res.json({
+     totalSubmissions: "-",
+     acceptanceRate: "-",
+     maxStreak: "-"
+   });
+ }
+});
+
+
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Test endpoint available at: http://localhost:${PORT}/app`);
 });
+

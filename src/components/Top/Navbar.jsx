@@ -4,7 +4,7 @@ import react from "react";
 
 const Nav=()=>{
     return(
-                    <div className=" pl-[120px] pr-[120px] border-2 border-black  h-[64px]
+                    <div className="  w-full sm:pl-[120px] pr-[120px] border-2 border-black  h-[64px]
                     flex 
                     items-center
                      ">

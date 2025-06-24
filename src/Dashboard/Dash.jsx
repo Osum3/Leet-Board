@@ -7,6 +7,7 @@ import Rating_card from '../components/Mid/Card';
 import Heatmap from './heatmap';
 import Navbar from '../components/Top/Navbar'
 import Componenet from '../components/chart-bar-multiple';
+import ProblemSolvingChart from '../components/bottom/piechart';
 function convert(d){
 const timestamp = d;
 const date = new Date(timestamp * 1000); // Convert to milliseconds
@@ -34,6 +35,9 @@ const Dash=({UserA})=>{
     const [map2,setmap2]=useState([]);
     const [a_sub,seta_sub]=useState(0)
     const [b_sub,setb_sub]=useState(0)
+    const[question,setquestion]=useState();
+    const[a_topic_wise,a_updatetopic_wise]=useState([]);
+    const[b_topic_wise,b_updatetopic_wise]=useState([]);
 
 
     useEffect( ()=>{
@@ -216,10 +220,88 @@ let curr_b=0;
   }
   
   contestrating();
-  // console.log(UserA,diff)
-  // const parsedInf = JSON.parse(map1);
- 
-// setmap1(data)
+
+
+
+
+     async function topic_wise() {
+      const results = await Promise.all(
+        UserA.map(async (username) => {
+          try {
+            const res = await fetch('http://localhost:5000/Topic-Wise-Difficulty', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ username }),
+            });
+            const data = await res.json();
+            const raw=data.data.matchedUser.tagProblemCounts;
+            console.log(data)
+            const allTags = [...raw.advanced, ...raw.intermediate, ...raw.fundamental];
+            const topTags = allTags
+  .sort((a, b) => b.problemsSolved - a.problemsSolved)
+  .slice(0, 10);
+
+// Step 3: Define some colors (extend if needed)
+const colors = [
+  '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8',
+  '#82CA9D', '#FFC658', '#FF7C7C', '#A28CF2', '#FF69B4',
+  '#A9A9A9', '#FFA07A', '#20B2AA', '#FFD700', '#6B8E23'
+];
+const topic = topTags.map((tag, i) => ({
+  name: tag.tagName,
+  value: tag.problemsSolved,
+  color: colors[i % colors.length]
+}));
+if (username === UserA[0] && a_topic_wise.length === 0) {
+  a_updatetopic_wise(topic);
+    console.log(topic);
+    console.log(UserA[0]);;
+
+} else if (username === UserA[1] && b_topic_wise.length === 0) {
+  b_updatetopic_wise(topic);
+    console.log(UserA[1]);;
+
+  console.log(topic);
+
+}
+          } catch (err) {
+            console.error(err);
+            // return 0; 
+          }
+        })
+      );
+    }
+    topic_wise()
+
+
+
+
+  async function getLeetCodeStats() {
+    const results=await Promise.all(UserA.map(async (username)=>{
+
+      try {
+        const response = await fetch('http://localhost:5000/leetcode-stats', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json',
+     },
+     body: JSON.stringify({ username })
+   });
+
+   const data = await response.json();
+   console.log(data.totalSubmissions,data.acceptanceRate,data.maxStreak)
+ } catch (error) {
+   console.error('Error fetching LeetCode stats:', error);
+   return {
+     totalSubmissions: "-",
+     acceptanceRate: "-",
+     maxStreak: "-"
+    };
+  }
+}))  
+}
+getLeetCodeStats();
+
 }
 
 
@@ -227,88 +309,147 @@ let curr_b=0;
 
      
      return (
-      <div>
-        <Navbar/>
-{/* // top */}
-        <div id='top' className='ml-[120px] m-[120px]  mt-10 flex flex-row justify-center'>
-            <div>
-                <div className='flex flex-row '>
-                      {(cnt!=null)?<Ques_card props={cnt[0]}/> : ''}
-                      {(cnt!=null)?<Ques_card props={cnt[1]}/> : ''}
-                  </div>
-                  <div  className='  flex flex-row mt-[21px]'>
-                        <Active_days props={active[0]}/>
-                        <Active_days props={active[1]}/>
-                  </div>
-            </div>
-                  <div className='  w-[588px] h-[319px] border-2 border-black
-                  
-                  '>        
-                            {
+       <div >
+         <Navbar />
+         {/* // top */}
+         <div
+           id="top"
+           className="  ml-4 mr-4 flex flex-col justify-center md:flex-row justify-center md:ml-[120px] md:mr-[120px] md:gap-4 md:mt-6"
+         >
+           <div className=" w-full md:w-1/2 max-w-[576px] ">
+             <div className=" flex md:gap-4 ">
+               {cnt != null ? <Ques_card props={cnt[0]} /> : ""}
+               {cnt != null ? <Ques_card props={cnt[1]} /> : ""}
+             </div>
+             <div className="  flex md:gap-4 ">
+               <Active_days props={active[0]} />
+               <Active_days props={active[1]} />
+             </div>
+           </div>
+           <div className=" w-full md:max-w-[576px] border-2 border-black">
+             {cnt != null ? (
+               <Componenet
+                 d={[
+                   [cnt[0][0], cnt[1][0]],
+                   [cnt[0][2], cnt[1][2]],
+                 ]}
+               />
+             ) : (
+               ""
+             )}
+           </div>
+         </div>
 
-                            (cnt!=null)?<Componenet d={[[cnt[0][0],cnt[1][0]],[cnt[0][2],cnt[1][2]]]}/>:''
-                            } 
-                  </div>    
-          </div>
-    
-    
-                    <div id='middle' className=' mt-[24px] ml-[120px] mr-[120px] flex  flex-row justify-center'>
-                  <div  className='w-[580px]   '>
-                {constdata.length === 0 ? null : <ContestRatingsChart info={[constdata,UserA]} />}
-          
-                   </div>
-                   
-               <Rating_card data={[UserA[0],const_att[0],curr_rating[0],max_rating[0]]}/>
-               <Rating_card data={[UserA[1],const_att[1],curr_rating[1],max_rating[1]]}/>
-                </div>
-          
-            {/* bottom */}
-           <div className='mt-[120px] ml-[120px] mr-[120px] flex flex-col  pl-40 pr-40'>
-           
-           <div className='w-full  flex flex-col justify-between mb-24 '>
-            {(a_sub!=0)? <div className='flex justify-between'>
-
-            <div className=' text-[32px] weight-semibold'>
-              {UserA[0]}
-            </div>
-            <div className='  text-[32px] weight-semibold'>
-              Total Submission : {a_sub}
-            </div> 
-            </div>: ''}
-            
-            
-             {(map1.length>0 &&  a_sub!=0)? <Heatmap inf={map1} />:''}
+         <div
+           id="middle"
+           className=" flex flex-col sm:flex-row md:w-full justify-center gap-4 mt-4"
+         >
+           <div className="w-full md:w-[580px] ">
+             {constdata.length === 0 ? null : (
+               <ContestRatingsChart info={[constdata, UserA]} />
+             )}
            </div>
 
-                             <div className='w-full  flex flex-col justify-between '>
-
-                              {(b_sub!=0)? 
-            <div className='flex justify-between'>
-
-            <div className=' text-[32px] weight-semibold'>
-              {UserA[1]}
-            </div>
-            <div className='  text-[32px] weight-semibold'>
-              Total Submission : {b_sub}
-            </div> 
-            </div>
-              : ''}
-            
-             {(map2.length>0 && b_sub!=0)? <Heatmap inf={map2} />:''}
+           <div className=" flex gap-4 sm:flex-row">
+             <Rating_card
+               data={[UserA[0], const_att[0], curr_rating[0], max_rating[0]]}
+             />
+             <Rating_card
+               data={[UserA[1], const_att[1], curr_rating[1], max_rating[1]]}
+             />
            </div>
-
-
-          
-           
-          </div>
-      </div>
+         </div>
+         {/* <div id='middle' className='w-full flex flex-col md:flex-row md:mt-[24px] justify-center gap-4'>
+    <div className='w-full md:w-[580px]'>
+        {constdata.length === 0 ? null : <ContestRatingsChart info={[constdata,UserA]} />}
+    </div>
     
-    
+    <div className='w-full md:w-auto flex flex-col sm:flex-row gap-4 justify-center items-center ml-5 mr-5'>
+        <Rating_card data={[UserA[0],const_att[0],curr_rating[0],max_rating[0]]}/>
+        <Rating_card data={[UserA[1],const_att[1],curr_rating[1],max_rating[1]]}/>
+    </div>
+</div> */}
 
-  
+         
+         <div  id="bottom" className="  bg-red-400 mt-4 md:flex md:justify-center md:ml-[120px] md:mr-[120px]  md:gap-4">
+                            <div className="  md:w-[580px]    ">
+                                <div className='w-full '>
 
-   
-    )
+                                      <div className=" text-[32px] weight-semibold">{UserA[0]}</div>
+
+                                    {map1.length > 0 && a_sub != 0 ? <Heatmap inf={map1} /> : ""}
+
+                                </div>
+                              {a_sub != 0 ? (<div className="flex   justify-evenly text-[24px] ">
+                                   
+                                    <div className='text-center    '>
+                                          <div>Total Submission </div>
+                                          <div>{a_sub}</div> 
+                                      </div>
+                                    
+                                    <div className='text-center   '>
+                                        <div>Acceptance Rate </div>
+                                       <div>{a_sub}</div> 
+                                    </div>
+
+                                    <div className='text-center   '>
+                                        <div>Max Streak </div>
+                                        <div>{a_sub}</div> 
+                                    </div>
+                                  
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                              <div className="  md:w-[580px]   ">
+                                <div className='w-full '>
+
+                                <div className="  text-[32px] weight-semibold">{UserA[1]}</div>
+                              {map2.length > 0 && b_sub != 0 ? <Heatmap inf={map2} /> : ""}
+                                </div>
+                              {a_sub != 0 ? (
+                                <div className="flex  justify-evenly text-[24px] ">
+                                   
+                                    <div className='text-center  '>
+                                        <div>Total Submission </div>
+                                      <div>{a_sub}</div> 
+                                      </div>
+                                    
+                                    <div className='text-center '>
+                                        <div>Acceptance Rate </div>
+                                      <div>{a_sub}</div> 
+                                      </div>
+
+                                      <div className='text-center '>
+                                        <div>Max Streak </div>
+                                      <div>{a_sub}</div> 
+                                      </div>
+                                  
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                    
+         </div>
+
+
+
+
+
+          <div className="flex-row justify-center  md:flex ">
+            <div className='md:w-[580px] '>
+
+           <ProblemSolvingChart dataa={a_topic_wise} />
+            </div>
+            <div className='md:w-[580px] '>
+
+           <ProblemSolvingChart dataa={b_topic_wise}/>
+            </div>
+         </div> 
+       </div>
+     );
      
     
     

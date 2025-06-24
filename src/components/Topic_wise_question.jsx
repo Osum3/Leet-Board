@@ -1,3 +1,5 @@
+
+
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const Componenet = ({d} ) => {
@@ -38,4 +40,4 @@ const Componenet = ({d} ) => {
   );
 };
 
-export default Componenet;
+export default Topic;
