@@ -7,31 +7,26 @@ import Dash from './Dashboard/Dash';
 
 import CalendarHeatmap from 'react-calendar-heatmap';
 // import Heatmap from './components/heatmap';
-// import Nav from './components/ui/Navbar';
+import Nav from './components/Top/Navbar';
 import Ques_card from './components/Top/q_no_card';
-// import 'react-calendar-heatmap/dist/styles.css';
+
 
 
 
 const App=()=> {
-  let [View,setview]=useState();
-  let [UserA,setUserA]=useState(["kaushal__07","ayu_264"]);
+  let [View,setview]=useState(0);
+  let [UserA,setUserA]=useState([]);
   // Aashishk878 kaushal__07 rybhrdwj
   
   return (
     <>
-       {/* <Nav/>  */}
-    
+    <Nav/>
     
      {
-      //  (View==0)?<LoginUser  setview={setview} setUserA={setUserA }          />  :<Dash UserA={UserA }  />
+       (View==0)?<LoginUser  setview={setview} setUserA={setUserA }          />  :<Dash UserA={UserA }  />
        }
-        <Dash UserA={UserA}/> 
-        {/* <Component/>   */}
-      
-      
-       
-         {/* <Heatmap/>  */}
+        {/* <Dash UserA={UserA}/>  */}
+        
       
        </>  
       

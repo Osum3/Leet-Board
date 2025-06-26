@@ -50,7 +50,7 @@
 
  :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(0.0956 0.051 300.12);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -82,6 +82,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
+
 
 .dark {
   --background: oklch(0.145 0 0);
@@ -140,8 +141,8 @@
   ry: 2;
 }
 .react-calendar-heatmap text {
-  font-size: 11px;
-  fill: #000000;
+  font-size: 12px;
+  fill: #ffffff;
 }
 
 .react-calendar-heatmap .react-calendar-heatmap-small-text {
@@ -149,8 +150,8 @@
 }
 
 .react-calendar-heatmap rect:hover {
-  stroke: #3c1313;
-  stroke-width: 0.5px;
+  stroke: #000000;
+  stroke-width: 1px;
 }
 
 /*
@@ -162,7 +163,7 @@
 }
 
 .react-calendar-heatmap .color-filled {
-  fill: #23cc48;
+  fill: #1d7230;
 }
 
 /*
@@ -170,20 +171,27 @@
  */
 
 .react-calendar-heatmap .color-github-0 {
-  fill: #f5f5f5;
+  fill: #393939; /* No activity - dark gray */
 }
 .react-calendar-heatmap .color-github-1 {
-  fill: #4c6199;
+  fill: #8b5cf6; /* Very light purple */
 }
 .react-calendar-heatmap .color-github-2 {
-  fill: #3818a1;
+  fill: #7c3aed; /* Medium purple */
 }
 .react-calendar-heatmap .color-github-3 {
-  fill: #150d22;
+  fill: #6d28d9; /* Deep purple */
 }
 .react-calendar-heatmap .color-github-4 {
-  fill: #afaf00;
+  fill: #5b21b6; /* Rich purple */
 }
+.react-calendar-heatmap .color-github-5 {
+  fill: #4c1d95; /* Intense purple */
+}
+.react-calendar-heatmap .color-github-6 {
+  fill: #c084fc; /* Neon purple for 9+ */
+}
+
 
 /*
  * Gitlab color scale

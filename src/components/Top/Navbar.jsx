@@ -4,13 +4,19 @@ import react from "react";
 
 const Nav=()=>{
     return(
-                    <div className="  w-full sm:pl-[120px] pr-[120px] border-2 border-black  h-[64px]
-                    flex 
-                    items-center
-                     ">
-                       <div className="text-xl font-medium">Leetboard</div>
-                       <div className="ml-auto">User A</div>
-                       <div className="ml-20">User B</div>
+                    <div className="  bg-gray-900 w-full     h-[64px]
+                       
+                        flex justify-center
+                        items-center
+                       text-white 
+                                         ">
+                      {/* Leetboard */}
+                      <div className=" flex max-w-[1152px] justify-between w-full  ">
+                        
+                       <div className="   text-3xl  font-bold">LeetBoard</div>
+                        {/* <div className="">User A</div>
+                       <div className="">User B</div>  */}
+                      </div>
                     </div>
                 )
 }

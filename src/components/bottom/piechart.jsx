@@ -9,7 +9,7 @@ const ProblemSolvingChart = ({dataa}) => {
   const total = data.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <div className=" bg-blue-100 w-[580px] ">
+    <div className="  w-[580px] ">
       <div className="text-center ">
         <h2 className="text-2xl font-bold text-gray-800">Problems Solved by Topic</h2>       
       </div>

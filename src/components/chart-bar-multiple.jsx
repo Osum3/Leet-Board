@@ -23,16 +23,35 @@ const Componenet = ({d} ) => {
       [User[1]]: data[1][2],
     },
   ];
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length >= 2) {
+    return (
+      <div className="bg-[#1e1e2f] text-white p-3 rounded-lg shadow-lg border border-white/20">
+        <p className="text-xl font-bold mb-2">{label}</p>
+
+        <div className="text-lg font-semibold text-white" >
+          {payload[0].name} : {payload[0].value}
+        </div>
+
+        <div className="text-lg font-semibold text-white" >
+          {payload[1].name} : {payload[1].value}
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
 
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={chartData} >
         <XAxis dataKey="difficulty" />
         <YAxis />
-        <Tooltip />
+         <Tooltip content={<CustomTooltip />} />
         <Legend />
-        <Bar dataKey={User[0]} fill="#8884d8" />
-        <Bar dataKey={User[1]} fill="#82ca9d" />
+        <Bar dataKey={User[0]} fill="	#8F43EE" />
+        <Bar dataKey={User[1]} fill="	#FF9F1C" />
       </BarChart>
     </ResponsiveContainer>
   );

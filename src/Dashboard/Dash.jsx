@@ -38,6 +38,7 @@ const Dash=({UserA})=>{
     const[question,setquestion]=useState();
     const[a_topic_wise,a_updatetopic_wise]=useState([]);
     const[b_topic_wise,b_updatetopic_wise]=useState([]);
+    const[heatmap_info,setheatmap_info]=useState([['-','-','-'],['-','-','-']]);
 
 
     useEffect( ()=>{
@@ -91,13 +92,24 @@ const Dash=({UserA})=>{
 }));
 // console.log(username)
 const totalSubmissions = d.reduce((acc, day) => acc + day.count, 0);
-
-        if (idx === 0) {
+if (idx === 0) {
+          // console.log(totalSubmissions);
+          
           setmap1(d);
           seta_sub(totalSubmissions);
+          setheatmap_info(prev => {
+    const newState = [...prev]; // Create copy
+    newState[0] = [totalSubmissions, newState[0][1], newState[0][2]]; // Keep other values
+    return newState;
+  })
         } else if (idx === 1) {
           setmap2(d);
           setb_sub(totalSubmissions);
+          setheatmap_info(prev => {
+    const newState = [...prev]; // Create copy
+    newState[1] = [totalSubmissions, newState[1][1], newState[1][2]]; // Keep other values
+    return newState;
+  })
         }
             
             return (data.data.matchedUser.userCalendar.totalActiveDays);
@@ -235,7 +247,7 @@ let curr_b=0;
             });
             const data = await res.json();
             const raw=data.data.matchedUser.tagProblemCounts;
-            console.log(data)
+            // console.log(data)
             const allTags = [...raw.advanced, ...raw.intermediate, ...raw.fundamental];
             const topTags = allTags
   .sort((a, b) => b.problemsSolved - a.problemsSolved)
@@ -289,14 +301,31 @@ if (username === UserA[0] && a_topic_wise.length === 0) {
    });
 
    const data = await response.json();
-   console.log(data.totalSubmissions,data.acceptanceRate,data.maxStreak)
+   if(username==UserA[0]){
+    // setb_sub(totalSubmissions);
+    //       let temp=heatmap_info[0];
+    //       // console.log(heatmap_info);
+    //       temp[1]=data.acceptanceRate;
+    //       temp[2]=data.maxStreak;
+    //       setheatmap_info(temp);
+     setheatmap_info(prev => {
+    const newState = [...prev];
+    newState[0] = [newState[0][0], data.acceptanceRate, data.maxStreak];
+    return newState;
+  })
+          
+        }
+        if(username==UserA[1]){
+           setheatmap_info(prev => {
+    const newState = [...prev];
+    newState[1] = [newState[1][0], data.acceptanceRate, data.maxStreak];
+    return newState;
+  })
+   }
+  //  console.log(data.totalSubmissions,data.acceptanceRate,data.maxStreak)
  } catch (error) {
    console.error('Error fetching LeetCode stats:', error);
-   return {
-     totalSubmissions: "-",
-     acceptanceRate: "-",
-     maxStreak: "-"
-    };
+  
   }
 }))  
 }
@@ -309,12 +338,12 @@ getLeetCodeStats();
 
      
      return (
-       <div >
-         <Navbar />
+       <div className='bg-[#050010] text-white pt-4  h-full'>
+         
          {/* // top */}
          <div
            id="top"
-           className="  ml-4 mr-4 flex flex-col justify-center md:flex-row justify-center md:ml-[120px] md:mr-[120px] md:gap-4 md:mt-6"
+           className="  ml-4 mr-4 flex flex-col justify-center md:flex-row justify-center md:ml-[120px] md:mr-[120px] md:gap-4 "
          >
            <div className=" w-full md:w-1/2 max-w-[576px] ">
              <div className=" flex md:gap-4 ">
@@ -326,7 +355,7 @@ getLeetCodeStats();
                <Active_days props={active[1]} />
              </div>
            </div>
-           <div className=" w-full md:max-w-[576px] border-2 border-black">
+           <div className=" w-full md:max-w-[576px] p-4 rounded-xl bg-gradient-to-br from-gray-800/40 to-gray-900/30 backdrop-blur-md border border-white/20 shadow-2xl hover:shadow-purple-500/30 transition-all duration-300">
              {cnt != null ? (
                <Componenet
                  d={[
@@ -344,7 +373,9 @@ getLeetCodeStats();
            id="middle"
            className=" flex flex-col sm:flex-row md:w-full justify-center gap-4 mt-4"
          >
-           <div className="w-full md:w-[580px] ">
+           <div className="w-full md:w-[580px] rounded-xl 
+              bg-gradient-to-br from-gray-800/40 to-gray-900/30 backdrop-blur-md border border-white/20 shadow-2xl hover:shadow-purple-500/30 transition-all duration-300
+         hover:brightness-110">
              {constdata.length === 0 ? null : (
                <ContestRatingsChart info={[constdata, UserA]} />
              )}
@@ -359,42 +390,43 @@ getLeetCodeStats();
              />
            </div>
          </div>
-         {/* <div id='middle' className='w-full flex flex-col md:flex-row md:mt-[24px] justify-center gap-4'>
-    <div className='w-full md:w-[580px]'>
-        {constdata.length === 0 ? null : <ContestRatingsChart info={[constdata,UserA]} />}
-    </div>
-    
-    <div className='w-full md:w-auto flex flex-col sm:flex-row gap-4 justify-center items-center ml-5 mr-5'>
-        <Rating_card data={[UserA[0],const_att[0],curr_rating[0],max_rating[0]]}/>
-        <Rating_card data={[UserA[1],const_att[1],curr_rating[1],max_rating[1]]}/>
-    </div>
-</div> */}
+        
 
          
-         <div  id="bottom" className="  bg-red-400 mt-4 md:flex md:justify-center md:ml-[120px] md:mr-[120px]  md:gap-4">
-                            <div className="  md:w-[580px]    ">
-                                <div className='w-full '>
+         <div  id="bottom" className="   mt-4 md:flex md:justify-center md:ml-[120px] md:mr-[120px]  md:gap-4 ">
+                            <div className="  md:w-[580px]    
+                                bg-gradient-to-br from-gray-800/40 to-gray-900/30 backdrop-blur-md border border-white/20 shadow-2xl hover:shadow-purple-500/30 transition-all duration-300
+         hover:brightness-110 p-4
+         ">
+                                <div className='w-full 
+                             
+                                '>
 
-                                      <div className=" text-[32px] weight-semibold">{UserA[0]}</div>
+                                   <div className="relative inline-flex items-center gap-2 bg-gradient-to-r from-purple-900/50 to-orange-900/50  px-4 py-2 rounded-lg border border-purple-500/30 backdrop-blur-sm">
+  <span className="font-bold text-white tracking-wide">{UserA[0]}</span>
+  {/* <div className="text-xs text-gray-400 font-mono">#001</div> */}
+</div>
 
                                     {map1.length > 0 && a_sub != 0 ? <Heatmap inf={map1} /> : ""}
 
                                 </div>
                               {a_sub != 0 ? (<div className="flex   justify-evenly text-[24px] ">
                                    
-                                    <div className='text-center    '>
-                                          <div>Total Submission </div>
-                                          <div>{a_sub}</div> 
+                                    <div className='text-center'>
+                                        {/* {console.log(heatmap_info[0])} */}
+
+                                          <div className='text-xl opacity-80 '>Total Submission </div>
+                                          <div className='text-3xl font-semibold'>{heatmap_info[0][0]}</div> 
                                       </div>
                                     
                                     <div className='text-center   '>
-                                        <div>Acceptance Rate </div>
-                                       <div>{a_sub}</div> 
+                                        <div className='text-xl opacity-80 '>Acceptance Rate </div>
+                                       <div className='text-3xl font-semibold'>{heatmap_info[0][1]}</div> 
                                     </div>
 
                                     <div className='text-center   '>
-                                        <div>Max Streak </div>
-                                        <div>{a_sub}</div> 
+                                        <div className='text-xl opacity-80 '>Max Streak </div>
+                                        <div className='text-3xl font-semibold'>{heatmap_info[0][2]}</div> 
                                     </div>
                                   
                                 </div>
@@ -402,28 +434,35 @@ getLeetCodeStats();
                                 ""
                               )}
                             </div>
-                              <div className="  md:w-[580px]   ">
+                              <div className="  md:w-[580px]  
+                                  bg-gradient-to-br from-gray-800/40 to-gray-900/30 backdrop-blur-md border border-white/20 shadow-2xl hover:shadow-purple-500/30 transition-all duration-300
+         hover:brightness-110  p-4
+          ">
                                 <div className='w-full '>
 
-                                <div className="  text-[32px] weight-semibold">{UserA[1]}</div>
+                                <div className="relative inline-flex items-center gap-2 bg-gradient-to-r from-purple-900/50 to-orange-900/50 px-4 py-2 rounded-lg border border-purple-500/30 backdrop-blur-sm">
+  <span className="font-bold text-white tracking-wide">{UserA[1]}</span>
+  {/* <div className="text-xs text-gray-400 font-mono">#001</div> */}
+</div>
                               {map2.length > 0 && b_sub != 0 ? <Heatmap inf={map2} /> : ""}
                                 </div>
-                              {a_sub != 0 ? (
+                              {b_sub != 0  ? (
                                 <div className="flex  justify-evenly text-[24px] ">
+         
                                    
                                     <div className='text-center  '>
-                                        <div>Total Submission </div>
-                                      <div>{a_sub}</div> 
+                                        <div    className='text-xl opacity-80 '   >Total Submission </div>
+                                      <div    className='text-3xl font-semibold'    >{heatmap_info[1][0]}</div> 
                                       </div>
                                     
                                     <div className='text-center '>
-                                        <div>Acceptance Rate </div>
-                                      <div>{a_sub}</div> 
+                                        <div   className='text-xl opacity-80 '   >Acceptance Rate </div>
+                                      <div className='text-3xl font-semibold' >{heatmap_info[1][1]}</div> 
                                       </div>
 
                                       <div className='text-center '>
-                                        <div>Max Streak </div>
-                                      <div>{a_sub}</div> 
+                                        <div className='text-xl opacity-80 '  >Max Streak </div>
+                                      <div  className='text-3xl font-semibold'>{heatmap_info[1][2]}</div> 
                                       </div>
                                   
                                 </div>
@@ -438,16 +477,24 @@ getLeetCodeStats();
 
 
 
-          <div className="flex-row justify-center  md:flex ">
-            <div className='md:w-[580px] '>
+          <div className="flex-row justify-center  md:flex mt-4 mb-4">
+            <div 
+            // className='md:w-[580px] '
+            >
 
            <ProblemSolvingChart dataa={a_topic_wise} />
             </div>
-            <div className='md:w-[580px] '>
+            <div 
+            // className='md:w-[580px]
+            //  '
+             >
 
            <ProblemSolvingChart dataa={b_topic_wise}/>
             </div>
          </div> 
+         {/* <div className='bg-black'>
+          footer
+         </div> */}
        </div>
      );
      

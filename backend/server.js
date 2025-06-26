@@ -13,47 +13,47 @@ app.use(express.json());
 
 
 
-// app.post("/verify", async (req, res) => {
-//   try {
-//     // console.log("req.body = ", req.body);
+app.post("/verify", async (req, res) => {
+  try {
+    // console.log("req.body = ", req.body);
 
-//     const { username } = req.body;
+    const { username } = req.body;
 
-//     const proxyUrl = "https://thingproxy.freeboard.io/fetch/";
-//     const targetUrl = "https://leetcode.com/graphql";
+    const proxyUrl = "https://thingproxy.freeboard.io/fetch/";
+    const targetUrl = "https://leetcode.com/graphql";
 
-//     const response = await fetch(targetUrl, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         operationName: "matchedUser",
-//         variables: {
-//           usernam: username,
-//         },
-//         query: `
-//         query matchedUser($usernam: String!) {
-//           matchedUser(username: $usernam) {
-//             username
-//           }
-//         }
-//       `,
-//       }),
-//     });
-//     const data = await response.json();
-//     console.log(` fetched LeetCode data for user: `);
-//     // console.log(data);
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        operationName: "matchedUser",
+        variables: {
+          usernam: username,
+        },
+        query: `
+        query matchedUser($usernam: String!) {
+          matchedUser(username: $usernam) {
+            username
+          }
+        }
+      `,
+      }),
+    });
+    const data = await response.json();
+    console.log(` fetched LeetCode data for user: `);
+    // console.log(data);
 
-//     if (data.data.matchedUser) {
-//       res.json({ found: true });
-//     } else {
-//       res.json({ found: false });
-//     }
-//   } catch (error) {
-//     res.json({ found: 1 });
-//   }
-// });
+    if (data.data.matchedUser) {
+      res.json({ found: true });
+    } else {
+      res.json({ found: false });
+    }
+  } catch (error) {
+    res.json({ found: 1 });
+  }
+});
 
 app.post("/usercalender", async (req, res) => {
   const { username } = req.body;
@@ -353,7 +353,7 @@ app.post("/leetcode-stats", async (req, res) => {
    }
 
    const user = data.data.matchedUser;
-   
+   console.log(user.submitStats)
    // Calculate totals
    const totalSubmissions = user.submitStats?.totalSubmissionNum
      ?.reduce((sum, item) => sum + (item.submissions || 0), 0) || "-";
