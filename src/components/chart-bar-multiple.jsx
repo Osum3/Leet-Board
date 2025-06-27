@@ -21,8 +21,9 @@ const Componenet = ({d} ) => {
       difficulty: 'Hard',
       [User[0]]: data[0][2],
       [User[1]]: data[1][2],
-    },
+    }
   ];
+
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length >= 2) {
     return (

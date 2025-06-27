@@ -169,6 +169,14 @@
 /*
  * Github color scale
  */
+ .hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
 
 .react-calendar-heatmap .color-github-0 {
   fill: #393939; /* No activity - dark gray */

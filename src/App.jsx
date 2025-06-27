@@ -3,6 +3,7 @@ import { useReducer } from 'react';
 import './App.css'
 import LoginUser from './LoginPage/Login'
 import Dash from './Dashboard/Dash';
+import Footer from './components/footer';
 
 
 import CalendarHeatmap from 'react-calendar-heatmap';
@@ -20,13 +21,13 @@ const App=()=> {
   
   return (
     <>
-    <Nav/>
+    <Nav  setview={setview} View={View}/>
     
      {
-       (View==0)?<LoginUser  setview={setview} setUserA={setUserA }          />  :<Dash UserA={UserA }  />
+       (View==0)?<LoginUser  setview={setview} setUserA={setUserA }          />  :<Dash  setview={setview} UserA={UserA }  />
        }
-        {/* <Dash UserA={UserA}/>  */}
         
+        <Footer/>
       
        </>  
       

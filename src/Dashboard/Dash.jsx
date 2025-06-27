@@ -22,7 +22,7 @@ return( `${day} ${month} ${year}`);
 
 
 
-const Dash=({UserA})=>{
+const Dash=({setview,UserA})=>{
   const [active,setactive]=useState([]);
   const [constdata,setconstdata]=useState([]);
     const[cnt,setCounts]=useState(null);
@@ -256,8 +256,8 @@ let curr_b=0;
 // Step 3: Define some colors (extend if needed)
 const colors = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8',
-  '#82CA9D', '#FFC658', '#FF7C7C', '#A28CF2', '#FF69B4',
-  '#A9A9A9', '#FFA07A', '#20B2AA', '#FFD700', '#6B8E23'
+  '#82CA9D', '#FFC658', '#FF7C7C', '#FFFFFF', '#FF69B4',
+  '#A9A9A9', '#FFA07A', '#20B2AG', '#FFD700', '#6B8E23'
 ];
 const topic = topTags.map((tag, i) => ({
   name: tag.tagName,
@@ -266,14 +266,13 @@ const topic = topTags.map((tag, i) => ({
 }));
 if (username === UserA[0] && a_topic_wise.length === 0) {
   a_updatetopic_wise(topic);
-    console.log(topic);
-    console.log(UserA[0]);;
+   
 
 } else if (username === UserA[1] && b_topic_wise.length === 0) {
   b_updatetopic_wise(topic);
-    console.log(UserA[1]);;
+    // console.log(UserA[1]);;
 
-  console.log(topic);
+  // console.log(topic);
 
 }
           } catch (err) {
@@ -338,19 +337,19 @@ getLeetCodeStats();
 
      
      return (
-       <div className='bg-[#050010] text-white pt-4  h-full'>
+       <div className='bg-[#050010] text-white pt-4  h-full '>
          
          {/* // top */}
          <div
            id="top"
-           className="  ml-4 mr-4 flex flex-col justify-center md:flex-row justify-center md:ml-[120px] md:mr-[120px] md:gap-4 "
+           className="  ml-4 mr-4 flex flex-col justify-center md:flex-row justify-center md:ml-[120px] md:mr-[120px] md:gap-4  "
          >
            <div className=" w-full md:w-1/2 max-w-[576px] ">
              <div className=" flex md:gap-4 ">
                {cnt != null ? <Ques_card props={cnt[0]} /> : ""}
                {cnt != null ? <Ques_card props={cnt[1]} /> : ""}
              </div>
-             <div className="  flex md:gap-4 ">
+             <div className="  flex  md:gap-4 ">
                <Active_days props={active[0]} />
                <Active_days props={active[1]} />
              </div>
@@ -396,13 +395,13 @@ getLeetCodeStats();
          <div  id="bottom" className="   mt-4 md:flex md:justify-center md:ml-[120px] md:mr-[120px]  md:gap-4 ">
                             <div className="  md:w-[580px]    
                                 bg-gradient-to-br from-gray-800/40 to-gray-900/30 backdrop-blur-md border border-white/20 shadow-2xl hover:shadow-purple-500/30 transition-all duration-300
-         hover:brightness-110 p-4
+         hover:brightness-110 p-4 rounded-xl
          ">
                                 <div className='w-full 
                              
                                 '>
 
-                                   <div className="relative inline-flex items-center gap-2 bg-gradient-to-r from-purple-900/50 to-orange-900/50  px-4 py-2 rounded-lg border border-purple-500/30 backdrop-blur-sm">
+                                   <div className="relative inline-flex items-center gap-2 bg-gradient-to-r from-purple-900/50 to-orange-900/50  px-4 py-2 rounded-lg border border-purple-500/30 backdrop-blur-sm ">
   <span className="font-bold text-white tracking-wide">{UserA[0]}</span>
   {/* <div className="text-xs text-gray-400 font-mono">#001</div> */}
 </div>
@@ -436,7 +435,7 @@ getLeetCodeStats();
                             </div>
                               <div className="  md:w-[580px]  
                                   bg-gradient-to-br from-gray-800/40 to-gray-900/30 backdrop-blur-md border border-white/20 shadow-2xl hover:shadow-purple-500/30 transition-all duration-300
-         hover:brightness-110  p-4
+         hover:brightness-110  p-4 rounded-xl
           ">
                                 <div className='w-full '>
 
@@ -477,24 +476,28 @@ getLeetCodeStats();
 
 
 
-          <div className="flex-row justify-center  md:flex mt-4 mb-4">
-            <div 
+          <div className="flex-row justify-center  md:flex mt-4 mb-4 gap-4">
+            <div className='
+            bg-gradient-to-br from-gray-800/40 to-gray-900/30 backdrop-blur-md border border-white/20 shadow-2xl hover:shadow-purple-500/30 transition-all duration-300
+         hover:brightness-110 p-4 rounded-xl md:w-[580px]
+            '
             // className='md:w-[580px] '
             >
 
-           <ProblemSolvingChart dataa={a_topic_wise} />
+           <ProblemSolvingChart dataa={a_topic_wise} user={UserA[0]}/>
             </div>
             <div 
-            // className='md:w-[580px]
-            //  '
+            className='md:w-[580px]
+            bg-gradient-to-br from-gray-800/40 to-gray-900/30 backdrop-blur-md border border-white/20 shadow-2xl hover:shadow-purple-500/30 transition-all duration-300
+         hover:brightness-110 p-4 rounded-xl
+             '
              >
 
-           <ProblemSolvingChart dataa={b_topic_wise}/>
+           <ProblemSolvingChart dataa={b_topic_wise}  user={UserA[1]} />
             </div>
          </div> 
-         {/* <div className='bg-black'>
-          footer
-         </div> */}
+        
+
        </div>
      );
      

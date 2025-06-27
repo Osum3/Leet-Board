@@ -64,11 +64,12 @@ async function Submithandler() {
   
    check1 = await u1();
   check2 = await u2();
-  console.log(check1,check2);
-  if(check1==true && check2==true){
+  // console.log(check1,check2);
+  
+   if(check1==true && check2==true){
    setview(1)
    setUserA([input1,input2]);
-   console.log('-------------------------------------')
+  //  console.log('-------------------------------------')
   
   }
 else if(check2==false && check1==false){
@@ -96,12 +97,14 @@ useEffect(() => {
     return(
       <div className="min-h-screen bg-[#0f172a] text-white flex flex-col items-center justify-center px-4">
           
-          <h1 className="text-5xl sm:text-6xl font-extrabold text-center mb-4 tracking-tight">
-        Track Your Coding Journey, Compare with Friends.
-      </h1>
-      <p className="text-lg sm:text-xl text-gray-300 mb-6 text-center max-w-2xl">
-        Realtime comparison of LeetCode performance, ratings, and contests.
-      </p>
+        <h1 className="text-5xl sm:text-6xl font-extrabold text-center mb-4 tracking-tight">
+  LeetCode Insights. Visualized Together.
+</h1>
+<p className="text-lg sm:text-xl text-gray-300 mb-6 text-center max-w-2xl">
+  Analyze and compare contest ratings, problem tags, and daily streaks with your peers.
+</p>
+
+
 
       <motion.p
         className="text-blue-400 text-lg sm:text-xl font-semibold mb-10"

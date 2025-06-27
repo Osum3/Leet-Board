@@ -16,6 +16,17 @@ const user=(d.info[1])
           <p className="text-sm text-gray-200 mb-3">{contestData.date}</p>
           
           <div className="space-y-2">
+            <div>
+              <p className="font-medium text-[#FF9F1C]">{user[1]}</p>
+              {contestData.userB_rating ? (
+                <>
+                  <p className="text-base text-gray-100">Rating: {contestData.userB_rating.toFixed(2)}</p>
+                  <p className="text-base text-gray-100">Rank: {contestData.userB_rank.toLocaleString()}</p>
+                </>
+              ) : (
+                <p className="text-sm text-gray-400">Did not participate</p>
+              )}
+            </div>
             <div className="border-b pb-2">
               <p className="font-medium text-[#8F43EE]">{user[0]}</p>
               {contestData.userA_rating ? (
@@ -28,17 +39,6 @@ const user=(d.info[1])
               )}
             </div>
             
-            <div>
-              <p className="font-medium text-[#FF9F1C]">{user[1]}</p>
-              {contestData.userB_rating ? (
-                <>
-                  <p className="text-base text-gray-100">Rating: {contestData.userB_rating.toFixed(2)}</p>
-                  <p className="text-base text-gray-100">Rank: {contestData.userB_rank.toLocaleString()}</p>
-                </>
-              ) : (
-                <p className="text-sm text-gray-400">Did not participate</p>
-              )}
-            </div>
           </div>
         </div>
       );
@@ -75,18 +75,18 @@ const user=(d.info[1])
         <Line
           type="monotone"
           dataKey="userA_rating"
-          stroke="	#FF9F1C"
+          stroke="	#8F43EE"
           strokeWidth={5}
-          dot={{ fill: '	#FF9F1C', strokeWidth: 2, r: 5 }}
+          dot={{ fill: '	#8F43EE', strokeWidth: 2, r: 5 }}
           name={user[0]}
           connectNulls={true}
         />
         <Line
           type="monotone"
           dataKey="userB_rating"
-          stroke="#8F43EE"
+          stroke="#FF9F1C"
           strokeWidth={5}
-          dot={{ fill: '#8F43EE', strokeWidth: 2, r: 5 }}
+          dot={{ fill: '#FF9F1C', strokeWidth: 2, r: 5 }}
           name={user[1]}
           connectNulls={true}
         />
