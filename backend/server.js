@@ -21,9 +21,10 @@ app.use(express.json());
 
 const targetUrl=process.env.TARGET_URL ;
 
-app.get("/", (req,res)=> {
-  req.status(200).send("hello its working");
-})
+app.get("/", (req, res) => {
+  res.status(200).send("hello its working");
+});
+
 
 app.post("/verify", async (req, res) => {
   try {
