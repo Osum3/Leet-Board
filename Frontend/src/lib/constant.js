@@ -1,2 +1,2 @@
 export const BASE_URL = 
-    location.hostname == "localhost" ? "http://localhost:5000" : "https://leetboard-backend.netlify.app/";
+    location.hostname == "localhost" ? "http://localhost:5000" : "https://leet-board-backend.vercel.app/";
