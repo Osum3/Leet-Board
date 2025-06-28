@@ -4,7 +4,7 @@ import './App.css'
 import LoginUser from './LoginPage/Login'
 import Dash from './Dashboard/Dash';
 import Footer from './components/footer';
-
+import { Analytics } from '@vercel/analytics/react';
 
 import CalendarHeatmap from 'react-calendar-heatmap';
 // import Heatmap from './components/heatmap';
@@ -28,6 +28,7 @@ const App=()=> {
        }
         
         <Footer/>
+        <Analytics />
       
        </>  
       
