@@ -1,7 +1,13 @@
-const app = express();
+import dotenv from 'dotenv';
 import express from "express";
 import cors from "cors";
 import axios from "axios";
+
+dotenv.config();
+
+const app = express();
+const PORT=process.env.PORT || 5000;
+
 
 // app.use(cors()); // Enables Cross-Origin Resource Sharing
 app.use(cors());
@@ -13,14 +19,15 @@ app.use(express.json());
 
 
 
+const targetUrl=process.env.TARGET_URL ;
+
 app.post("/verify", async (req, res) => {
   try {
     // console.log("req.body = ", req.body);
 
     const { username } = req.body;
 
-    const proxyUrl = "https://thingproxy.freeboard.io/fetch/";
-    const targetUrl = "https://leetcode.com/graphql";
+   
 
     const response = await fetch(targetUrl, {
       method: "POST",
@@ -59,7 +66,7 @@ app.post("/usercalender", async (req, res) => {
   const { username } = req.body;
   console.log(username)
   try {
-    const data = await fetch("https://leetcode.com/graphql", {
+    const data = await fetch(targetUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +109,7 @@ app.post("/qcount", async (req, res) => {
   const { username } = req.body;
   // console.log(req.body);
   try {
-    const data = await fetch("https://leetcode.com/graphql", {
+    const data = await fetch(targetUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -188,7 +195,7 @@ return( `${day} ${month} ${year}`);
 app.post('/qrating',async(req,res)=>{
   const {username}=req.body;
   try{
-      const data=await fetch( 'https://leetcode.com/graphql', {
+      const data=await fetch( targetUrl, {
         method:'POST',
         headers:{
           "Content-Type": "application/json",
@@ -261,8 +268,6 @@ app.post("/Topic-Wise-Difficulty", async (req, res) => {
     const { username } = req.body;
 
    
-    const targetUrl = "https://leetcode.com/graphql";
-
     const response = await fetch(targetUrl, {
       method: "POST",
       headers: {
@@ -315,7 +320,7 @@ app.post("/leetcode-stats", async (req, res) => {
  const { username } = req.body;
  
  try {
-   const response = await fetch("https://leetcode.com/graphql", {
+   const response = await fetch(targetUrl, {
      method: "POST",
      headers: {
        "Content-Type": "application/json",
@@ -384,7 +389,6 @@ app.post("/leetcode-stats", async (req, res) => {
 
 
 
-const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Test endpoint available at: http://localhost:${PORT}/app`);

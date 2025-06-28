@@ -8,6 +8,7 @@ import Heatmap from './heatmap';
 import Navbar from '../components/Top/Navbar'
 import Componenet from '../components/chart-bar-multiple';
 import ProblemSolvingChart from '../components/bottom/piechart';
+import { BASE_URL } from '../lib/constant';
 function convert(d){
 const timestamp = d;
 const date = new Date(timestamp * 1000); // Convert to milliseconds
@@ -49,7 +50,7 @@ const Dash=({setview,UserA})=>{
       const results = await Promise.all(
         UserA.map(async (username) => {
           try {
-            const res = await fetch('http://localhost:5000/qcount', {
+            const res = await fetch(BASE_URL+'/qcount', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ username }),
@@ -79,7 +80,7 @@ const Dash=({setview,UserA})=>{
       const result = await Promise.all(
         UserA.map(async (username,idx) => {
           try {
-            const res = await fetch('http://localhost:5000/usercalender', {
+            const res = await fetch(BASE_URL+'/usercalender', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ username }),
@@ -132,7 +133,7 @@ if (idx === 0) {
         UserA.map(async(username)=>{
 
           try{
-            const data=await fetch('http://localhost:5000/qrating',{
+            const data=await fetch(BASE_URL+'/qrating',{
             method:'POST',
             headers:{
               "Content-Type":"application/json",
@@ -240,7 +241,7 @@ let curr_b=0;
       const results = await Promise.all(
         UserA.map(async (username) => {
           try {
-            const res = await fetch('http://localhost:5000/Topic-Wise-Difficulty', {
+            const res = await fetch(BASE_URL+'/Topic-Wise-Difficulty', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ username }),
@@ -266,13 +267,14 @@ const topic = topTags.map((tag, i) => ({
 }));
 if (username === UserA[0] && a_topic_wise.length === 0) {
   a_updatetopic_wise(topic);
-   
+    console.log(topic);
+    console.log(UserA[0]);;
 
 } else if (username === UserA[1] && b_topic_wise.length === 0) {
   b_updatetopic_wise(topic);
-    // console.log(UserA[1]);;
+    console.log(UserA[1]);;
 
-  // console.log(topic);
+  console.log(topic);
 
 }
           } catch (err) {
@@ -291,7 +293,7 @@ if (username === UserA[0] && a_topic_wise.length === 0) {
     const results=await Promise.all(UserA.map(async (username)=>{
 
       try {
-        const response = await fetch('http://localhost:5000/leetcode-stats', {
+        const response = await fetch(BASE_URL+'/leetcode-stats', {
      method: 'POST',
      headers: {
        'Content-Type': 'application/json',
@@ -443,7 +445,13 @@ getLeetCodeStats();
   <span className="font-bold text-white tracking-wide">{UserA[1]}</span>
   {/* <div className="text-xs text-gray-400 font-mono">#001</div> */}
 </div>
-                              {map2.length > 0 && b_sub != 0 ? <Heatmap inf={map2} /> : ""}
+                              {map2.length > 0 && b_sub != 0 ? <Heatmap inf={map2} /> : <div className="text-center bg-gradient-to-r from-slate-800 to-slate-900 text-white px-6 py-8 rounded-xl shadow-lg border border-slate-700 w-full sm:w-2/3">
+      <h2 className="text-xl sm:text-2xl font-bold mb-2">User activity is hidden 🔒</h2>
+      <p className="text-gray-300">
+        We couldn’t find any submission data to display the heatmap.
+      </p>
+      <p className="text-gray-400 mt-2 italic">Maybe they’re on a break? ☕</p>
+    </div>}
                                 </div>
                               {b_sub != 0  ? (
                                 <div className="flex  justify-evenly text-[24px] ">
