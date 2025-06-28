@@ -8,7 +8,7 @@ import Heatmap from './heatmap';
 import Navbar from '../components/Top/Navbar'
 import Componenet from '../components/chart-bar-multiple';
 import ProblemSolvingChart from '../components/bottom/piechart';
-import { BASE_URL } from '../lib/constant';
+// import { BASE_URL } from '../lib/constant';
 function convert(d){
 const timestamp = d;
 const date = new Date(timestamp * 1000); // Convert to milliseconds
@@ -20,7 +20,7 @@ const year = date.getFullYear();
 return( `${day} ${month} ${year}`);
 }
 
-
+const BASE_URL="https://leet-board-backend.vercel.app";
 
 
 const Dash=({setview,UserA})=>{
