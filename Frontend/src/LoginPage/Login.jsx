@@ -23,7 +23,7 @@ async function Submithandler() {
 
   async function u1() {
     try {
-      const res = await fetch('http://localhost:5000/verify', {
+      const res = await fetch('https://leet-board-backend.vercel.app/verify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ async function Submithandler() {
 
   async function u2() {
     try {
-      const res = await fetch('http://localhost:5000/verify', {
+      const res = await fetch('https://leet-board-backend.vercel.app/verify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
