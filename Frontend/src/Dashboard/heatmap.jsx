@@ -16,8 +16,8 @@ const Heatmap = ({inf}) => {
   return (
     <div className='p-4 font-white'>
       <CalendarHeatmap className="font-white"
-        startDate={new Date('2025-01-01')}
-        endDate={new Date('2025-06-30')}
+        startDate={new Date('2025-03-01')}
+        endDate={new Date('2025-08-30')}
         values={safeValues}
         gutterSize={3}
         
